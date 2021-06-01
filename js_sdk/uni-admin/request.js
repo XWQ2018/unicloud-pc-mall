@@ -37,6 +37,7 @@ export function request(action, data, {
 			}
 			// const err = new Error(result.message)
 			// err.code = result.code
+			
 			const err = result
 			return Promise.reject(err)
 		}
@@ -52,6 +53,7 @@ export function request(action, data, {
 		}
 		return Promise.resolve(result)
 	}).catch(err => {
+		console.log('error==',err);
 		const that = this
 		showModal && uni.showModal({
 			content: err.message || '请求服务失败',

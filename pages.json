@@ -122,6 +122,15 @@
 					"navigationBarTitleText": "商品列表"
 				}
 			}]
+		},
+		{
+			"root": "pages/advert",
+			"pages": [{
+				"path": "advertBanner",
+				"style": {
+					"navigationBarTitleText": "轮播图广告管理"
+				}
+			}]
 		}
 	],
 	"globalStyle": {

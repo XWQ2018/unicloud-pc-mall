@@ -5,7 +5,7 @@ const uniID = require('uni-id')
 module.exports = class UserService extends Service {
 	constructor(ctx) {
 		super(ctx)
-		this.collection = this.db.collection('mix-product')
+		this.collection = this.db.collection('mix-advert')
 	}
 	async get() {
 		const {
@@ -13,7 +13,7 @@ module.exports = class UserService extends Service {
 			limit
 		} = this.ctx.data;
 		// const resPro = await this.db.collection('mix-product').skip(offset).limit(limit).get();
-		const resPro = await this.collection.get();
+		const resPro = await this.collection.where({type:'advert'}).get();
 		if (resPro.data) {
 			return {
 				code: 0,
