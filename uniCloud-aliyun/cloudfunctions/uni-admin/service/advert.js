@@ -12,8 +12,9 @@ module.exports = class UserService extends Service {
 			offset,
 			limit
 		} = this.ctx.data;
-		// const resPro = await this.db.collection('mix-product').skip(offset).limit(limit).get();
-		const resPro = await this.collection.where({type:'advert'}).get();
+		const resPro = await this.collection.where({
+			type: 'advert'
+		}).get();
 		if (resPro.data) {
 			return {
 				code: 0,
@@ -22,5 +23,21 @@ module.exports = class UserService extends Service {
 				msg: '成功'
 			}
 		}
+	}
+
+	async hideAdvert() {
+		const res = await this.collection.where({
+			_id: this.ctx.data.id
+		}).update({
+			status: this.ctx.data.status
+		});
+
+		if (res.updated > 0) {
+			return {
+				code: 0,
+				msg: '成功'
+			};
+		}
+
 	}
 }
