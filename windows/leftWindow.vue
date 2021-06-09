@@ -1,9 +1,9 @@
 <template>
 	<scroll-view class="sidebar" scroll-y="true">
-<!-- 		<uni-data-menu v-model="current" collection="opendb-admin-menus" gettree field="url as value, name as text, menu_id, icon" orderby="sort asc" active-text-color="#409eff">
+		<!-- 		<uni-data-menu v-model="current" collection="opendb-admin-menus" gettree field="url as value, name as text, menu_id, icon" orderby="sort asc" active-text-color="#409eff">
 			<uni-menu-sidebar :data="staticMenu"></uni-menu-sidebar>
 		</uni-data-menu> -->
-		<uni-nav-menu :uniqueOpened="true" :active="active" activeKey="url" activeTextColor="#409eff" @select="select">
+		<uni-nav-menu :uniqueOpened="true" :active="splitFullPath(active)" activeKey="url" textColor="#666" activeTextColor="#409eff" @select="select">
 			<uni-menu-sidebar :data="navMenu"></uni-menu-sidebar>
 			<uni-menu-sidebar :data="staticMenu"></uni-menu-sidebar>
 		</uni-nav-menu>
@@ -21,27 +21,37 @@
 			return {
 				...config.sideBar,
 				defaultValue: '',
-				current: ''
 			}
 		},
 		computed: {
-			...mapState('app', ['inited', 'navMenu', 'active'])
+			...mapState('app', ['inited', 'navMenu', 'active']),
+			...mapState('user', ['userInfo'])
 		},
 		// #ifdef H5
 		watch: {
 			$route: {
 				immediate: true,
 				handler(newRoute, oldRoute) {
-					if (newRoute.path !== (oldRoute && oldRoute.path)) {
-						this.changeMenuActive(newRoute.path)
+					if (newRoute.fullPath !== (oldRoute && oldRoute.fullPath)) {
+						this.changeMenuActive(newRoute.fullPath)
 					}
 				}
 			},
-			current: {
-				immediate: true,
-				handler(newUrl) {
-					this.select(newUrl)
+			navMenu(val) {
+				if (val.length) return
+				let content
+				if (this.userInfo.role.indexOf('admin') !== -1) {
+					content = '菜单表中没有数据，请对 db_init.json 文件右键，初始化数据库'
+				} else {
+					content = '该用户未被授权访问任何菜单表中的菜单,请使用管理员账户为该用户赋权,可在权限管理、角色管理、菜单管理中操作,详见uniCloud admin文档'
 				}
+				setTimeout(() => {
+					uni.showModal({
+						title: '提示',
+						showCancel: false,
+						content: content
+					})
+				}, 16)
 			}
 		},
 		// #endif
@@ -54,7 +64,6 @@
 
 				if (!url) {
 					url = this.active
-					this.current = url
 				}
 				this.clickMenuItem(url)
 			},
@@ -80,6 +89,10 @@
 						})
 					}
 				})
+			},
+			splitFullPath(path) {
+				if (!path) path = '/'
+				return path.split('?')[0]
 			},
 		}
 	}

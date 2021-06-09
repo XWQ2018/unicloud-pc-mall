@@ -1,5 +1,5 @@
 <template>
-	<view class="banner">
+	<view class="advert">
 		<el-table :data="tableData" v-loading="loading" border style="width: 100%" :cell-style="{textAlign:'center'}"
 			:header-cell-style="{textAlign:'center'}">
 			<el-table-column prop="add_time" label="日期" width="150">
@@ -21,7 +21,7 @@
 				<template slot-scope="scope">
 					<el-button :style="{marginBottom:'5px'}" @click="deleteHandle(scope.row)" type="danger "
 						size="small">删除</el-button>
-					<el-button :style="{margin:0}" type="primary" size="small">编辑</el-button>
+					<el-button :style="{margin:0}" @click="editorHandle(scope.row)" type="primary" size="small">编辑</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -106,6 +106,11 @@
 				this.currentPage = page;
 				this.init();
 				this.loading = true;
+			},
+			editorHandle(row){
+				uni.navigateTo({
+					url:'/pages/advert/advertEditor'
+				})
 			}
 		},
 	}

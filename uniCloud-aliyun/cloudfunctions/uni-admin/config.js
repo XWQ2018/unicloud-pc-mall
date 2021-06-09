@@ -1,3 +1,4 @@
+const init = require('./middleware/init')
 const auth = require('./middleware/auth')
 const permission = require('./middleware/permission')
 
@@ -43,6 +44,13 @@ module.exports = initPlugins({
 	plugin: {}, // 插件配置，可设置是否启用某插件及插件所有参数
 	middleware: [
 		[
+			init(),
+			{
+				name: 'init',
+				enable: true
+			}
+		],
+		[
 			auth(), // uniId 校验 token 中间件
 			{
 				name: 'auth',
@@ -55,7 +63,7 @@ module.exports = initPlugins({
 			{
 				name: 'permission',
 				enable: true,
-				ignore: ['app', 'user', 'self']
+				ignore: ['app', 'user', 'self','product','advert']
 			}
 		]
 	]

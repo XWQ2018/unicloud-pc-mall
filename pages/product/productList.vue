@@ -1,13 +1,5 @@
 <template>
 	<view>
-		<!-- <el-row>
-		  <el-button>默认按钮</el-button>
-		  <el-button type="primary" @click="btnClick">主要按钮</el-button>
-		  <el-button type="success">成功按钮</el-button>
-		  <el-button type="info">信息按钮</el-button>
-		  <el-button type="warning">警告按钮</el-button>
-		  <el-button type="danger">危险按钮</el-button>
-		</el-row> -->
 		<view class="form-wrap">
 			<el-form :inline="true" :model="formInline" class="demo-form-inline">
 				<el-form-item label="关键字">
@@ -54,9 +46,12 @@
 			</el-table-column>
 		</el-table>
 		<view v-if="tableData.length>0">
+		<view>
+			
 			<el-pagination :hide-on-single-page="value" @current-change="handleCurrentChange"
 				:current-page="currentPage" :page-size="pageSize" layout="total, prev, pager, next, jumper" :total="total">
 			</el-pagination>
+		</view>
 		</view>
 	</view>
 </template>

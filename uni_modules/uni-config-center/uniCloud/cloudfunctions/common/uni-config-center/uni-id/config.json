@@ -1,0 +1,43 @@
+{
+	"passwordSecret": "passwordSecretxwqreaiuniclouddev",
+	"tokenSecret": "tokenSecretxwqreaiuniclouddev",
+	"tokenExpiresIn": 7200,
+	"tokenExpiresThreshold": 600,
+	"passwordErrorLimit": 6,
+	"passwordErrorRetryTime": 3600,
+	"autoSetInviteCode": false,
+	"forceInviteCode": false,
+	"app-plus": {
+		"tokenExpiresIn": 2592000,
+		"oauth" : {
+			"weixin" : {
+				"appid" : "wxc764c6e1d7452690",
+				"appsecret" : "12a5e3327670538e655cc9679cd2613c"
+			}
+		}
+	},
+	"mp-weixin": {
+		"oauth" : {
+			"weixin" : {
+				"appid" : "wxc764c6e1d7452690",
+				"appsecret" : "12a5e3327670538e655cc9679cd2613c"
+			}
+		}
+	},
+	"mp-alipay": {
+		"oauth" : {
+			"alipay" : {
+				"appid" : "alipay appid",
+				"privateKey" : "alipay privateKey"
+			}
+		}
+	},
+	"service": {
+		"sms": {
+			"name": "lyMall",
+			"codeExpiresIn": 500,
+			"smsKey": "baa0b9831abc39471f35bdf24d77460b",
+			"smsSecret": "fa774eb1e1ff1a6a6888eb36b74d71ce"
+		}
+	}
+}

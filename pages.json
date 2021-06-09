@@ -126,11 +126,18 @@
 		{
 			"root": "pages/advert",
 			"pages": [{
-				"path": "advertBanner",
-				"style": {
-					"navigationBarTitleText": "轮播图广告管理"
+					"path": "advertBanner",
+					"style": {
+						"navigationBarTitleText": "轮播图广告管理"
+					}
+				},
+				{
+					"path": "advertEditor",
+					"style": {
+						"navigationBarTitleText": "轮播图广告编辑"
+					}
 				}
-			}]
+			]
 		}
 	],
 	"globalStyle": {
