@@ -1,6 +1,6 @@
 <template>
 	<view class="advert-editor">
-		<el-page-header @back="goBack" content="广告图编辑">
+		<el-page-header @back="goBack" :content="content">
 		</el-page-header>
 		<view class="form-wrap">
 			<el-form ref="form" :model="form" label-width="80px">
@@ -45,11 +45,13 @@
 					desc: ''
 				},
 				listtArr: [],
-				type: ''
+				type: '',
+				content: '广告图新增'
 			}
 		},
 		created() {
 			this.type = this.$route.query.type;
+			this.content = this.type == 'editor' ? "广告图编辑" : "广告图新增";
 			if (this.type == 'editor') {
 				const {
 					name,
