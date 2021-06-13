@@ -379,6 +379,7 @@ uni-button:after {
 		margin-left: 100px;
 	}
 }
+
 /* #endif */
 
 .uni-pagination-box {
@@ -391,16 +392,25 @@ uni-button:after {
 	margin-right: 20px;
 }
 
-.select-picker button{
+.select-picker button {
 	margin-top: 5px;
-    line-height: 29px;
-    font-size: 14px;
+	line-height: 29px;
+	font-size: 14px;
 }
 
-.select-picker button text{
+.select-picker button text {
 	color: #999;
 }
 
 .select-picker-icon {
 	margin-left: 8px;
+}
+
+
+/* element-ui 样式处理 */
+
+.el-pagination button {
+	border: none !important;
+	padding: 0 6px;
+	background: transparent;
 }

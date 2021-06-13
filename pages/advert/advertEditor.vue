@@ -1,59 +1,29 @@
 <template>
 	<view class="advert-editor">
-		<el-page-header @back="goBack" content="广告图编辑页面">
+		<el-page-header @back="goBack" content="广告图编辑">
 		</el-page-header>
 		<view class="form-wrap">
 			<el-form ref="form" :model="form" label-width="80px">
-				<el-form-item label="名称">
+				<el-form-item label="图片名称">
 					<el-input v-model="form.name"></el-input>
 				</el-form-item>
-				<!-- 			<el-form-item label="活动区域">
-					<el-select v-model="form.region" placeholder="请选择活动区域">
-						<el-option label="区域一" value="shanghai"></el-option>
-						<el-option label="区域二" value="beijing"></el-option>
-					</el-select>
-				</el-form-item> -->
-				<!-- <el-form-item label="活动时间">
-					<el-col :span="11">
-						<el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;">
-						</el-date-picker>
-					</el-col>
-					<el-col class="line" :span="2">-</el-col>
-					<el-col :span="11">
-						<el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
-					</el-col>
-				</el-form-item> -->
+				<el-form-item label="上传图片">
+					<uni-file-picker v-model="listtArr" title="" return-type="array" limit="1" file-mediatype="image"
+						:auto-upload='true' @select="select" @progress="progress" @success="success" @fail="fail"
+						@delete="deleteHandle">
+					</uni-file-picker>
+				</el-form-item>
+				<el-form-item label="类型">
+					<el-radio-group v-model="form.type">
+						<el-radio label="广告图"></el-radio>
+						<el-radio label="一级分类图"></el-radio>
+					</el-radio-group>
+				</el-form-item>
 				<el-form-item label="是否开启">
 					<el-switch v-model="form.status"></el-switch>
 				</el-form-item>
-				<el-form-item label="类型">
-					<el-checkbox-group v-model="form.type">
-						<el-checkbox label="广告图" name="advert"></el-checkbox>
-						<el-checkbox label="一级分类图" name="oneCate"></el-checkbox>
-						<el-checkbox label="二级分类图" name="twoCate"></el-checkbox>
-						<el-checkbox label="产品主图" name="productPic"></el-checkbox>
-					</el-checkbox-group>
-				</el-form-item>
-				<el-form-item label="上传图片">
-					<!-- <el-radio-group v-model="form.resource">
-						<el-radio label="线上品牌商赞助"></el-radio>
-						<el-radio label="线下场地免费"></el-radio>
-					</el-radio-group> -->
-					<!-- <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/"
-						:on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList" list-type="picture">
-						<el-button size="small" type="primary">点击上传</el-button>
-						<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-					</el-upload> -->
-					<uni-file-picker v-model="listtArr" title="" return-type="array" limit="1" file-mediatype="image"
-						@select="select" @progress="progress" @success="success" @fail="fail" @delete="deleteHandle">
-					</uni-file-picker>
-				</el-form-item>
-				<!-- <el-form-item label="活动形式">
-					<el-input type="textarea" v-model="form.desc"></el-input>
-				</el-form-item> -->
 				<el-form-item>
 					<el-button type="primary" @click="onSubmit">确定提交</el-button>
-					<!-- <el-button>取消</el-button> -->
 				</el-form-item>
 			</el-form>
 		</view>
@@ -74,22 +44,27 @@
 					resource: '',
 					desc: ''
 				},
-				fileList: [{
-					name: 'food.jpeg',
-					url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-				}, {
-					name: 'food2.jpeg',
-					url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-				}],
-				listtArr: []
+				listtArr: [],
+				type: ''
 			}
 		},
 		created() {
-
+			this.type = this.$route.query.type;
+			if (this.type == 'editor') {
+				const {
+					name,
+					image
+				} = this.$storageFn('get', 'banerInfo') || {};
+				this.form.name = name;
+				let obj = {
+					name,
+					extname: "jpg",
+					url: image,
+				}
+				this.listtArr.push(obj);
+			}
 		},
-		mounted() {
-
-		},
+		mounted() {},
 		methods: {
 			goBack() {
 				uni.navigateBack()
@@ -114,6 +89,7 @@
 			// 获取上传状态
 			select(e) {
 				console.log('选择文件：', e)
+				console.log('listtArr==', this.listtArr);
 			},
 			// 获取上传进度
 			progress(e) {
@@ -122,7 +98,7 @@
 
 			// 上传成功
 			success(e) {
-				console.log('上传成功',e)
+				console.log('上传成功', e)
 			},
 
 			// 上传失败

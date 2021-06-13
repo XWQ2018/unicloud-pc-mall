@@ -1,5 +1,9 @@
 <template>
 	<view class="advert">
+		<view class="top">
+			<el-button @click="addAdvert" type="primary" size="large">新增
+			</el-button>
+		</view>
 		<el-table :data="tableData" v-loading="loading" border style="width: 100%" :cell-style="{textAlign:'center'}"
 			:header-cell-style="{textAlign:'center'}">
 			<el-table-column prop="add_time" label="日期" width="150">
@@ -21,7 +25,8 @@
 				<template slot-scope="scope">
 					<el-button :style="{marginBottom:'5px'}" @click="deleteHandle(scope.row)" type="danger "
 						size="small">删除</el-button>
-					<el-button :style="{margin:0}" @click="editorHandle(scope.row)" type="primary" size="small">编辑</el-button>
+					<el-button :style="{margin:0}" @click="editorHandle(scope.row)" type="primary" size="small">编辑
+					</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -91,10 +96,14 @@
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					this.$message({
-						type: 'success',
-						message: '删除成功!'
-					});
+					this.$request('deleteFile/deleteFilePic', {
+						fileID: "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-49c5ac86-3404-4667-a3a1-82ee7eebb236/f6845918-6342-46c1-bf1d-9b7a45a69207.jpg"
+					}).then(res => {
+						console.log('res===', res);
+						// if (res.code == 0) {
+
+						// }
+					})
 				}).catch(() => {
 					this.$message({
 						type: 'info',
@@ -107,14 +116,30 @@
 				this.init();
 				this.loading = true;
 			},
-			editorHandle(row){
+			editorHandle(row) {
+				console.log(row);
+				this.$storageFn('set', 'banerInfo', row)
+				setTimeout(() => {
+					uni.navigateTo({
+						url: '/pages/advert/advertEditor?type=editor'
+					})
+				}, 500)
+			},
+			addAdvert() {
 				uni.navigateTo({
-					url:'/pages/advert/advertEditor'
+					url: '/pages/advert/advertEditor?type=add'
 				})
 			}
 		},
 	}
 </script>
 
-<style>
+<style scoped lang="scss">
+	.advert {
+		padding: 10px;
+
+		.top {
+			padding: 15px 0;
+		}
+	}
 </style>

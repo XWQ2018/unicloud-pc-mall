@@ -1,12 +1,12 @@
 const {
 	Service
 } = require('uni-cloud-router')
-const uniID = require('uni-id')
 module.exports = class UserService extends Service {
 	constructor(ctx) {
 		super(ctx)
 		this.collection = this.db.collection('mix-advert')
 	}
+
 	async get() {
 		const {
 			offset,

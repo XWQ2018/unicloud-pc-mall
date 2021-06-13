@@ -9,7 +9,7 @@ export default {
 		url: '/pages/error/404' // 404 Not Found 错误页面路径
 	},
 	navBar: { // 顶部导航
-		logo: '/static/logo.png', // 左侧 Logo
+		logo: '/static/login-icon.jpg', // 左侧 Logo
 		links: [{ // 右侧链接
 			text: '框架文档',
 			url: 'https://uniapp.dcloud.net.cn/uniCloud/admin'

@@ -36,10 +36,9 @@ export function request(action, data, {
 		if (!result) {
 			return Promise.resolve(result)
 		}
-		if (result.code) {
+		// 40300 自定义错误码
+		if (result.code && result.code != 40300) {
 			reLaunchToLogin(result.code)
-			// const err = new Error(result.message)
-			// err.code = result.code
 			const err = result
 			return Promise.reject(err)
 		}
