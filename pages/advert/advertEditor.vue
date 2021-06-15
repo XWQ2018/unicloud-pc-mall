@@ -8,22 +8,16 @@
 					<el-input v-model="form.name"></el-input>
 				</el-form-item>
 				<el-form-item label="上传图片">
-					<uni-file-picker v-model="listtArr" title="" return-type="array" limit="1" file-mediatype="image"
-						:auto-upload='true' @select="select" @progress="progress" @success="success" @fail="fail"
-						@delete="deleteHandle">
+					<uni-file-picker v-model="form.listtArr" title="" return-type="array" limit="1"
+						file-mediatype="image" :auto-upload='true' @select="select" @progress="progress"
+						@success="success" @fail="fail" @delete="deleteHandle">
 					</uni-file-picker>
 				</el-form-item>
-				<el-form-item label="类型">
-					<el-radio-group v-model="form.type">
-						<el-radio label="广告图"></el-radio>
-						<el-radio label="一级分类图"></el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="是否开启">
+				<el-form-item label="默认开启">
 					<el-switch v-model="form.status"></el-switch>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" @click="onSubmit">确定提交</el-button>
+					<el-button type="primary" :disabled="disabled" @click="onSubmit">确定提交</el-button>
 				</el-form-item>
 			</el-form>
 		</view>
@@ -36,17 +30,13 @@
 			return {
 				form: {
 					name: '',
-					region: '',
-					date1: '',
-					date2: '',
 					status: true,
-					type: [],
-					resource: '',
-					desc: ''
+					listtArr: []
 				},
-				listtArr: [],
 				type: '',
-				content: '广告图新增'
+				content: '广告图新增',
+				disabled: true,
+				loadingInstance: null
 			}
 		},
 		created() {
@@ -55,43 +45,61 @@
 			if (this.type == 'editor') {
 				const {
 					name,
-					image
+					image,
+					status
 				} = this.$storageFn('get', 'banerInfo') || {};
 				this.form.name = name;
+				this.form.status = (status == '1' ? true : false);
 				let obj = {
 					name,
 					extname: "jpg",
 					url: image,
 				}
-				this.listtArr.push(obj);
+				this.form.listtArr.push(obj);
 			}
 		},
-		mounted() {},
+		mounted() {
+
+		},
 		methods: {
 			goBack() {
 				uni.navigateBack()
 			},
 			onSubmit() {
-				console.log('submit!');
-				uni.chooseImage({
-					success: async chooseImageRes => {
-						const tempFilePaths = chooseImageRes.tempFilePaths;
-						console.log('imag==', tempFilePaths);
-						// this.isLoading = true;
-						// const uploadResult = await uniCloud.uploadFile({
-						// 	filePath: tempFilePaths[0],
-						// 	cloudPath: 'avatar.jpg',
-						// 	fileType: 'image'
-						// });
-						// this.isLoading = false;
-						// this.userDatum.avatar = uploadResult.fileID;
-					}
-				});
+				if (this.type == 'add') {
+					this.$request('advert/addAdvertImage', {
+						name: this.form.name,
+						image: this.form.listtArr[0].url,
+						status: this.form.status ? 1 : 0
+					}).then(res => {
+						if (res.code == 0) {
+							const Message = this.$message({
+								type: 'success',
+								message: res.msg
+							});
+							setTimeout(() => {
+								Message.close();
+								uni.navigateBack();
+							}, 1500);
+						} else {
+							this.$message({
+								type: 'info',
+								message: res.msg
+							});
+						}
+					})
+				}else{
+					console.log('更新');
+				}
+
 			},
 			// 获取上传状态
 			select(e) {
-				console.log('选择文件：', e)
-				console.log('listtArr==', this.listtArr);
+				console.log('选择文件：', e);
+				this.loadingInstance = this.$loading({
+					target: '.form-wrap',
+					background: 'transparent'
+				})
 			},
 			// 获取上传进度
 			progress(e) {
@@ -101,17 +109,45 @@
 			// 上传成功
 			success(e) {
 				console.log('上传成功', e)
+				this.loadingInstance.close();
+				this.loadingInstance = null;
 			},
 
 			// 上传失败
 			fail(e) {
 				console.log('上传失败：', e)
+				this.$message({
+					type: 'info',
+					message: '图片上传失败!'
+				});
 			},
 			//删除
 			deleteHandle(e) {
-				console.log('删除文件：', e)
+				this.loadingInstance = this.$loading({
+					target: '.form-wrap',
+					background: 'transparent'
+				})
+				this.$request('deleteFile/deleteFilePic', {
+					fileID: e.tempFilePath
+				}).then(res => {
+					this.form.listtArr = [];
+					this.loadingInstance.close();
+					this.loadingInstance = null;
+				})
 			}
 		},
+		watch: {
+			form: {
+				handler(newVal) {
+					if (newVal.name != '' && newVal.listtArr.length > 0) {
+						this.disabled = false;
+					} else {
+						this.disabled = true;
+					}
+				},
+				deep: true
+			}
+		}
 	}
 </script>
 

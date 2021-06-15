@@ -14,6 +14,13 @@ module.exports = class UserService extends Service {
 		} = this.ctx.data;
 		const resPro = await this.collection.where({
 			type: 'advert'
+		}).field({
+			add_time:1,
+			image: 1,
+			name: 1,
+			status: 1,
+			type: 1,
+			_id: 1
 		}).get();
 		if (resPro.data) {
 			return {
@@ -36,6 +43,38 @@ module.exports = class UserService extends Service {
 			return {
 				code: 0,
 				msg: '成功'
+			};
+		}
+
+	}
+
+	async addAdvert() {
+		const {
+			status,
+			name,
+			image,
+		} = this.ctx.data;
+		const res = await this.collection.add({
+			add_time: Date.now(),
+			update_time: Date.now(),
+			status,
+			name,
+			image,
+			type: 'advert',
+			advert_type: 'carousel',
+			link: '',
+			sort: 0
+		});
+
+		if (res.id) {
+			return {
+				code: 0,
+				msg: '新增成功'
+			};
+		} else {
+			return {
+				code: 40300,
+				msg: '新增失败'
 			};
 		}
 

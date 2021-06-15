@@ -17,7 +17,7 @@
 			</el-table-column>
 			<el-table-column prop="price" label="上架状态" width="120">
 				<template slot-scope="scope">
-					<el-switch v-model="scope.row.saleStatus" @change="changeHandle($event,scope)"
+					<el-switch v-model="scope.row.startStatus" @change="changeHandle($event,scope)"
 						active-color="#13ce66" inactive-color="#ccc"></el-switch>
 				</template>
 			</el-table-column>
@@ -53,9 +53,11 @@
 			}
 		},
 		created() {
+
+		},
+		mounted() {
 			this.init();
 		},
-		mounted() {},
 		methods: {
 			init() {
 				const requestInfo = {
@@ -67,7 +69,7 @@
 						this.tableData = res.data;
 						this.total = res.total;
 						this.tableData.forEach(row => (row.add_time = this.$dateFormat(row.add_time,
-							'yyyy-MM-dd'), row.saleStatus = row.status ? true : false));
+							'yyyy-MM-dd'), row.startStatus = row.status ? true : false));
 						this.loading = false;
 					}
 				})
@@ -76,16 +78,23 @@
 				$index,
 				row
 			}) {
-				row.saleStatus = val;
+				row.startStatus = val;
 				this.$set(this.tableData, $index, row)
 				this.$request('advert/hideAdvertImage', {
 					id: row._id,
 					status: val ? 1 : 0
 				}).then(res => {
+					console.log(res);
 					if (res.code == 0) {
-						this.$tips('更新成功')
+						this.$message({
+							type: 'success',
+							message: val ? '已开启' : '已关闭'
+						});
 					} else {
-						this.$tips('更新失败')
+						this.$message({
+							type: 'error',
+							message: '更新失败'
+						});
 					}
 				})
 			},
@@ -96,14 +105,7 @@
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					this.$request('deleteFile/deleteFilePic', {
-						fileID: "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-49c5ac86-3404-4667-a3a1-82ee7eebb236/f6845918-6342-46c1-bf1d-9b7a45a69207.jpg"
-					}).then(res => {
-						console.log('res===', res);
-						// if (res.code == 0) {
 
-						// }
-					})
 				}).catch(() => {
 					this.$message({
 						type: 'info',

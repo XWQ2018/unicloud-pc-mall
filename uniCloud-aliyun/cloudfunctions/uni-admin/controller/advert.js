@@ -10,4 +10,8 @@ module.exports = class UserController extends Controller {
 	async hideAdvertImage(){
 		return this.service.advert.hideAdvert()
 	}
+	
+	async addAdvertImage(){
+		return this.service.advert.addAdvert()
+	}
 }
