@@ -15,7 +15,7 @@ module.exports = class UserService extends Service {
 		const resPro = await this.collection.where({
 			type: 'advert'
 		}).field({
-			add_time:1,
+			add_time: 1,
 			image: 1,
 			name: 1,
 			status: 1,
@@ -54,6 +54,13 @@ module.exports = class UserService extends Service {
 			name,
 			image,
 		} = this.ctx.data;
+
+		if (typeof status == 'undefined' || typeof name == 'undefined' || typeof image == 'undefined') {
+			return {
+				code: 40300,
+				msg: '参数不能为空'
+			}
+		}
 		const res = await this.collection.add({
 			add_time: Date.now(),
 			update_time: Date.now(),
@@ -78,5 +85,41 @@ module.exports = class UserService extends Service {
 			};
 		}
 
+	}
+
+	async updateAdvert() {
+		const {
+			status,
+			name,
+			image,
+			_id
+		} = this.ctx.data;
+
+		if (typeof status == 'undefined' || typeof name == 'undefined' || typeof image == 'undefined' ||
+			typeof _id == 'undefined') {
+			return {
+				code: 40300,
+				msg: '参数不能为空'
+			}
+		}
+
+		const res = await this.collection.doc(_id).update({
+			update_time: Date.now(),
+			status,
+			name,
+			image,
+		});
+
+		if (res.updated) {
+			return {
+				code: 0,
+				msg: '修改成功'
+			}
+		} else {
+			return {
+				code: 40300,
+				msg: '修改失败'
+			}
+		}
 	}
 }

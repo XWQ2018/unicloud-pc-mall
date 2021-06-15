@@ -36,18 +36,20 @@
 				type: '',
 				content: '广告图新增',
 				disabled: true,
-				loadingInstance: null
+				loadingInstance: null,
+				banerInfo: {}
 			}
 		},
-		created() {
+		onLoad() {
 			this.type = this.$route.query.type;
 			this.content = this.type == 'editor' ? "广告图编辑" : "广告图新增";
 			if (this.type == 'editor') {
+				this.banerInfo = this.$storageFn('get', 'banerInfo') || {};
 				const {
 					name,
 					image,
 					status
-				} = this.$storageFn('get', 'banerInfo') || {};
+				} = this.banerInfo;
 				this.form.name = name;
 				this.form.status = (status == '1' ? true : false);
 				let obj = {
@@ -57,9 +59,6 @@
 				}
 				this.form.listtArr.push(obj);
 			}
-		},
-		mounted() {
-
 		},
 		methods: {
 			goBack() {
@@ -88,8 +87,30 @@
 							});
 						}
 					})
-				}else{
+				} else {
 					console.log('更新');
+					this.$request('advert/updateAdvertImage', {
+						_id: this.banerInfo._id,
+						name: this.form.name,
+						image: this.form.listtArr[0].url,
+						status: this.form.status ? 1 : 0
+					}).then(res => {
+						if (res.code == 0) {
+							const Message = this.$message({
+								type: 'success',
+								message: res.msg
+							});
+							setTimeout(() => {
+								Message.close();
+								uni.navigateBack();
+							}, 1500);
+						} else {
+							this.$message({
+								type: 'info',
+								message: res.msg
+							});
+						}
+					})
 				}
 
 			},

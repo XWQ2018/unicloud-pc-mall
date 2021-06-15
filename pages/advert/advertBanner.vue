@@ -52,10 +52,7 @@
 				total: 0
 			}
 		},
-		created() {
-
-		},
-		mounted() {
+		onShow() {
 			this.init();
 		},
 		methods: {
