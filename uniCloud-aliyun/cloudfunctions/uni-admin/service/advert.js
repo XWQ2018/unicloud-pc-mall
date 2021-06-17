@@ -122,4 +122,39 @@ module.exports = class UserService extends Service {
 			}
 		}
 	}
+
+	async deleteAdvert() {
+		const {
+			_id
+		} = this.ctx.data;
+		const role = this.ctx.auth.role;
+
+		if (typeof _id == 'undefined') {
+			return {
+				code: 40300,
+				msg: '_id不能为空'
+			}
+		}
+
+		if (role.indexOf('admin') > -1) {
+			const result = await this.collection.doc(_id).remove();
+			
+			if (result.deleted) {
+				return {
+					code: 0,
+					msg: '删除成功'
+				}
+			} else {
+				return {
+					code: 40300,
+					msg: "删除失败！"
+				}
+			}
+		} else {
+			return {
+				code: 40300,
+				msg: "请联系管理员！"
+			}
+		}
+	}
 }

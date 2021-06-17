@@ -11,7 +11,8 @@
 			<view class="navbar-left pointer">
 				<navigator class="logo" open-type="reLaunch" url="/">
 					<image :src="logo" mode="heightFix"></image>
-					<text>{{appName}}</text>
+					<text>商户管理后台</text>
+					<!-- <text>{{appName}}</text> -->
 				</navigator>
 				<uni-icons @click="toggleSidebar" type="bars" class="menu-icon" size="30" color="#999"></uni-icons>
 			</view>

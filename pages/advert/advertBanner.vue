@@ -53,6 +53,7 @@
 			}
 		},
 		onShow() {
+			this.loading = true;
 			this.init();
 		},
 		methods: {
@@ -96,13 +97,33 @@
 				})
 			},
 			deleteHandle(row) {
-				console.log('row==', row);
 				this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
+					console.log('row==', row);
+					this.$request('advert/deleteAdvertImage', {
+						_id: row._id
+					}).then(res => {
+						if (res.code == 0) {
+							const Message = this.$message({
+								type: 'success',
+								message: '删除成功'
+							});
 
+							setTimeout(() => {
+								Message.close();
+								this.loading = true;
+								this.init();
+							}, 1500)
+						} else {
+							this.$message({
+								type: 'info',
+								message: res.msg
+							});
+						}
+					})
 				}).catch(() => {
 					this.$message({
 						type: 'info',
