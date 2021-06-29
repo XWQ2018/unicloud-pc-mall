@@ -21,9 +21,9 @@
 						active-color="#13ce66" inactive-color="#ccc"></el-switch>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="180">
+			<el-table-column label="操作" width="250">
 				<template slot-scope="scope">
-					<el-button :style="{marginBottom:'5px'}" @click="deleteHandle(scope.row)" type="danger "
+					<el-button :style="{margin:'0 10px 5px 0'}" @click="deleteHandle(scope.row)" type="danger "
 						size="small">删除</el-button>
 					<el-button :style="{margin:0}" @click="editorHandle(scope.row)" type="primary" size="small">编辑
 					</el-button>
