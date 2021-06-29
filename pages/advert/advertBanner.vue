@@ -12,16 +12,16 @@
 			</el-table-column>
 			<el-table-column prop="image" label="图片" min-width="250">
 				<template slot-scope="scope">
-					<el-image lazy :src="scope.row.image" fit="fill"></el-image>
+					<el-image lazy :src="scope.row.image" fit="fill" style="width: 320px; height: 160px"></el-image>
 				</template>
 			</el-table-column>
-			<el-table-column prop="price" label="上架状态" width="120">
+			<el-table-column prop="price" label="上架状态" width="180">
 				<template slot-scope="scope">
 					<el-switch v-model="scope.row.startStatus" @change="changeHandle($event,scope)"
 						active-color="#13ce66" inactive-color="#ccc"></el-switch>
 				</template>
 			</el-table-column>
-			<el-table-column label="操作" width="120">
+			<el-table-column label="操作" width="180">
 				<template slot-scope="scope">
 					<el-button :style="{marginBottom:'5px'}" @click="deleteHandle(scope.row)" type="danger "
 						size="small">删除</el-button>
