@@ -259,16 +259,23 @@
 	}
 
 	.page-container {
+	/* 	width: 100%;
+		height: 100%;
+		background: url("../../static/login-bg-default.jpg");
+		background-size: 100%; */
+		background-size: cover;
+		position: fixed;
+		top: 0;
+		left: 0;
 		width: 100%;
 		height: 100%;
-		background: url("/static/login-bg-default.jpg");
-		background-size: 100%;
+		background: url("../../static/login-bg-default.png") no-repeat center center;
 	}
 
 	.login-box {
 		position: absolute;
-		left: 50%;
-		top: 50%;
+		left: 85%;
+		top: 45%;
 		transform: translate(-50%,-50%);
 		max-width: 350px;
 		width: 100%;

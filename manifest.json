@@ -69,6 +69,19 @@
         "enable" : false
     },
     "h5" : {
-        "template" : "template.h5.html"
+        "template" : "template.h5.html",
+        "router" : {
+            "base" : "/lymallSys/"
+        },
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
+        },
+        "sdkConfigs" : {
+            "maps" : {}
+        },
+        "title" : "admin系统",
+        "domain" : "www.lymall.club"
     }
 }
