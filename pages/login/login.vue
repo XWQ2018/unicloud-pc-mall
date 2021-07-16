@@ -253,6 +253,10 @@
 		justify-content: center;
 		background-color: #fff;
 	}
+	
+	.uni-button{
+		line-height: 1.5 !important;
+	}
 
 	.page-container {
 		width: 100%;
