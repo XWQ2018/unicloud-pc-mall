@@ -280,13 +280,17 @@
 		max-width: 350px;
 		width: 100%;
 		background-color: rgba(255,255,255,.3);
-		border-radius: 10px;
+		border-radius: 5px;
 		flex: 1;
 		/* padding: 140px 35px 0; */
 		/* margin: 0 auto; */
 		overflow: hidden;
 		/* background-color: #F5F5F5; */
 
+	}
+	
+	/deep/ .uni-forms-item__content{
+		background-color: #fff;
 	}
 
 
